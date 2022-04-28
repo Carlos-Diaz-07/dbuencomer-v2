@@ -14,7 +14,6 @@ class BlogIndex extends React.Component {
       this,
       'props.data.cosmicjsSettings.metadata.site_title'
     )
-    const posts = get(this, 'props.data.allCosmicjsPosts.edges')
     const author = get(this, 'props.data.cosmicjsSettings.metadata')
     const location = get(this, 'props.location')
 
@@ -22,56 +21,10 @@ class BlogIndex extends React.Component {
       <Layout location={location}>
         <Helmet title={siteTitle} />
         <Bio settings={author} />
-        {posts.map(({ node }) => {
-          const title = get(node, 'title') || node.slug
-          return (
-            <div key={node.slug}>
-              <h3
-                style={{
-                  marginBottom: rhythm(1 / 4),
-                }}
-              >
-                <Link style={{ boxShadow: 'none' }} to={`posts/${node.slug}`}>
-                  {title}
-                </Link>
-              </h3>
-              <small>{node.created}</small>
-              <p
-                dangerouslySetInnerHTML={{ __html: node.metadata.description }}
-              />
-            </div>
-          )
-        })}
+      <p>We do not care</p>
       </Layout>
     )
   }
 }
 
 export default BlogIndex
-
-export const pageQuery = graphql`
-  query IndexQuery {
-    allCosmicjsPosts(sort: { fields: [created], order: DESC }, limit: 1000) {
-      edges {
-        node {
-          metadata {
-            description
-          }
-          slug
-          title
-          created(formatString: "DD MMMM, YYYY")
-        }
-      }
-    }
-    cosmicjsSettings(slug: { eq: "general" }) {
-      metadata {
-        site_title
-        author_name
-        author_bio
-        author_avatar {
-          imgix_url
-        }
-      }
-    }
-  }
-`
